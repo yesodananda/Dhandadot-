@@ -1,0 +1,48 @@
+import React, { useState } from 'react'
+
+export default function App() {
+  const [customers, setCustomers] = useState([
+    { id: 1, name: "Ravi Kumar", phone: "9876543210", due: 500 },
+  ])
+  const [name, setName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [due, setDue] = useState("")
+
+  const addCustomer = () => {
+    if(!name) return
+    setCustomers([...customers, { id: Date.now(), name, phone, due: Number(due) || 0 }])
+    setName(""); setPhone(""); setDue("")
+  }
+
+  const totalDue = customers.reduce((s,c)=>s + c.due, 0)
+
+  return (
+    <div style={{fontFamily:'system-ui', maxWidth:'500px', margin:'0 auto', padding:'20px', background:'#0f172a', minHeight:'100vh', color:'white'}}>
+      <h1 style={{fontSize:'32px', fontWeight:'bold', textAlign:'center'}}>🏪 DhandaDot</h1>
+      <p style={{textAlign:'center', color:'#94a3b8', marginBottom:'20px'}}>Local Business AI Tool</p>
+      
+      <div style={{background:'#1e293b', padding:'15px', borderRadius:'12px', marginBottom:'20px', display:'flex', justifyContent:'space-between'}}>
+        <div><p style={{color:'#94a3b8', fontSize:'12px'}}>CUSTOMERS</p><h2>{customers.length}</h2></div>
+        <div><p style={{color:'#94a3b8', fontSize:'12px'}}>TOTAL DUE</p><h2 style={{color:'#22c55e'}}>₹{totalDue}</h2></div>
+      </div>
+
+      <div style={{background:'#1e293b', padding:'15px', borderRadius:'12px', marginBottom:'20px'}}>
+        <h3 style={{marginBottom:'10px'}}>➕ Add Customer</h3>
+        <input value={name} onChange={e=>setName(e.target.value)} placeholder="Name" style={{width:'100%', padding:'10px', marginBottom:'8px', borderRadius:'8px', border:'none', color:'black'}} />
+        <input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Phone" style={{width:'100%', padding:'10px', marginBottom:'8px', borderRadius:'8px', border:'none', color:'black'}} />
+        <input value={due} onChange={e=>setDue(e.target.value)} placeholder="Due Amount ₹" type="number" style={{width:'100%', padding:'10px', marginBottom:'8px', borderRadius:'8px', border:'none', color:'black'}} />
+        <button onClick={addCustomer} style={{width:'100%', padding:'12px', background:'#3b82f6', color:'white', border:'none', borderRadius:'8px', fontWeight:'bold'}}>Add Customer</button>
+      </div>
+
+      <div>
+        <h3 style={{marginBottom:'10px'}}>👥 Customers</h3>
+        {customers.map(c=>(
+          <div key={c.id} style={{background:'#1e293b', padding:'12px', borderRadius:'10px', marginBottom:'10px', display:'flex', justifyContent:'space-between'}}>
+            <div><b>{c.name}</b><br/><small style={{color:'#94a3b8'}}>{c.phone}</small></div>
+            <div style={{color: c.due>0 ? '#fbbf24' : '#22c55e', fontWeight:'bold'}}>₹{c.due}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
